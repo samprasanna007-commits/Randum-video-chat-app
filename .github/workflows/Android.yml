@@ -12,13 +12,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Source
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
+          cache: npm
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -26,22 +27,32 @@ jobs:
           distribution: temurin
           java-version: 17
 
-      - name: Install Dependencies
-        run: npm install --legacy-peer-deps. 
-        
-      - name: Debug project files  
+      - name: Check Project Files
         run: |
           pwd
           ls -la
-          find . -maxdepth 3 -type f | sort | head -100   
-          
-      - name: Build Vite    
+          find . -maxdepth 3 -type f | sort | head -100
+
+      - name: Install Dependencies
+        run: |
+          npm install --legacy-peer-deps
+          npm install -D esbuild@^0.28.0 --legacy-peer-deps
+
+      - name: Build Vite
         run: npm run build
 
-      - name: Sync Capacitor
+      - name: Setup Capacitor
+        run: |
+          npm install @capacitor/core @capacitor/cli @capacitor/android --legacy-peer-deps
+
+      - name: Check Capacitor Config
+        run: |
+          ls -la capacitor.config.*
+
+      - name: Sync Android
         run: npx cap sync android
 
-      - name: Build Android APK
+      - name: Build APK
         run: |
           cd android
           chmod +x gradlew
@@ -53,3 +64,4 @@ jobs:
           name: Delulu-Android-APK
           path: android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
+          retention-days: 7
