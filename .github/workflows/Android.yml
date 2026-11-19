@@ -27,12 +27,14 @@ jobs:
           java-version: 17
 
       - name: Install Dependencies
-        run: npm install --legacy-peer-deps.               
+        run: npm install --legacy-peer-deps. 
+        
       - name: Debug project files  
         run: |
           pwd
           ls -la
-          find . -maxdepth 3 -type f | sort | head -100    
+          find . -maxdepth 3 -type f | sort | head -100   
+          
       - name: Build Vite    
         run: npm run build
 
