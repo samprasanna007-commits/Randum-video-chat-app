@@ -1,0 +1,9 @@
+{
+  "name": "Delulu",
+  "description": "India-only 18+ random video and text chat application with real WebRTC signaling, camera/mic controls, and report \u0026 block safety tools.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": []
+}
